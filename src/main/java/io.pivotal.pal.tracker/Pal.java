@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+import javax.sql.DataSource;
+import java.util.TimeZone;
+
 @SpringBootApplication
 public class Pal {
 
@@ -17,8 +20,8 @@ public class Pal {
     }
 
     @Bean
-    TimeEntryRepository timeEntryRepository() {
-        return (TimeEntryRepository) new InMemoryTimeEntryRepository();
+    TimeEntryRepository timeEntryRepository(DataSource dataSource) {
+        return new JdbcTimeEntryRepository(dataSource);
     }
 
     @Bean
@@ -29,4 +32,5 @@ public class Pal {
                 .modules(new JavaTimeModule())
                 .build();
     }
+
 }
